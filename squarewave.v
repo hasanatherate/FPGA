@@ -33,3 +33,34 @@ temp=8'b11111111;end
 end
 assign op = temp;
 endmodule
+module squarewave_tb;
+    reg clk, rst, fqs;
+    wire [7:0] op;
+
+    squarewave uut (
+        .clk(clk),
+        .rst(rst),
+        .fqs(fqs),
+        .op(op)
+    );
+
+    // Clock generation
+    always #5 clk = ~clk;
+
+    initial begin
+        // Initialize signals
+        clk = 0;
+        rst = 0;
+        fqs = 0;
+
+        // Apply reset
+        #10 rst = 1;
+
+        // Test different frequencies
+        #100 fqs = 1;
+        #200 fqs = 0;
+
+        // Finish simulation
+        #300 $finish;
+    end
+endmodule
